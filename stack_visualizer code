@@ -1,0 +1,43 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
+class StackVisualizer:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        self.visualize()
+
+    def pop(self):
+        if self.stack:
+            self.stack.pop()
+            self.visualize()
+        else:
+            print("Stack is empty. Cannot pop.")
+
+    def visualize(self):
+        fig, ax = plt.subplots()
+        ax.set_xlim(0, 4)
+        ax.set_ylim(0, len(self.stack) + 2)
+        ax.axis('off')
+
+        for i, val in enumerate(reversed(self.stack)):
+            y = i + 1
+            color = 'lightcoral' if i == 0 else 'skyblue'  # Top element highlighted
+            rect = Rectangle((1, y), 2, 1, facecolor=color, edgecolor='black')
+            ax.add_patch(rect)
+            ax.text(2, y + 0.5, str(val), va='center', ha='center', fontsize=12)
+
+        ax.text(1, len(self.stack) + 1.5, 'Top', ha='left', fontsize=10, color='red')
+        plt.title('Stack Visualizer')
+        plt.show()
+
+
+# 🎮 Example Usage
+if __name__ == "__main__":
+    stack = StackVisualizer()
+    stack.push(10)
+    stack.push(20)
+    stack.push(30)
+    stack.pop()
