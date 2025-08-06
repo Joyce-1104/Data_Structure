@@ -1,0 +1,68 @@
+from collections import deque
+import matplotlib.pyplot as plt
+import time
+
+class VisualQueue:
+    def __init__(self, capacity=5):
+        self.queue = deque()
+        self.capacity = capacity
+
+    def enqueue(self, value):
+        if len(self.queue) < self.capacity:
+            self.queue.append(value)
+            print(f"Enqueued: {value}")
+            self.visualize()
+        else:
+            print("Queue is full")
+
+    def dequeue(self):
+        if not self.is_empty():
+            removed = self.queue.popleft()
+            print(f"Dequeued: {removed}")
+            self.visualize()
+            return removed
+        else:
+            print("Queue is empty")
+            return None
+
+    def peek(self):
+        if not self.is_empty():
+            print(f"Front Element: {self.queue[0]}")
+            return self.queue[0]
+        else:
+            print("Queue is empty")
+            return None
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+    def display(self):
+        print("Queue:", list(self.queue))
+
+    def visualize(self):
+        plt.clf()
+        fig, ax = plt.subplots()
+        bars = ax.barh(range(len(self.queue)), list(self.queue), color='skyblue')
+        if self.queue:
+            bars[0].set_color('lightgreen')  # front
+            bars[-1].set_color('orange')    # rear
+
+        ax.set_yticks(range(len(self.queue)))
+        ax.set_yticklabels([f"Index {i}" for i in range(len(self.queue))])
+        ax.set_title("Queue Visualization (Front -> Rear)")
+        ax.set_xlabel("Values")
+        plt.pause(0.8)
+        plt.close()
+
+# Usage
+q = VisualQueue()
+
+plt.ion()  # Turn on interactive mode
+q.enqueue(10)
+q.enqueue(20)
+q.enqueue(30)
+q.enqueue(40)
+q.dequeue()
+q.peek()
+q.display()
+plt.ioff()  # Turn off interactive mode
